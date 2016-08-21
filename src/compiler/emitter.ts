@@ -1,6 +1,7 @@
 /// <reference path="checker.ts"/>
 /// <reference path="sourcemap.ts" />
 /// <reference path="declarationEmitter.ts"/>
+/// <reference path="flowDeclarationEmitter.ts"/>
 
 /* @internal */
 namespace ts {
@@ -8364,7 +8365,7 @@ const _super = (function (geti, seti) {
             }
         }
 
-        function emitFile({ jsFilePath, sourceMapFilePath, declarationFilePath}: { jsFilePath: string, sourceMapFilePath: string, declarationFilePath: string },
+        function emitFile({ jsFilePath, sourceMapFilePath, declarationFilePath, flowDeclarationFilePath}: { jsFilePath: string, sourceMapFilePath: string, declarationFilePath: string, flowDeclarationFilePath: string },
             sourceFiles: SourceFile[], isBundledEmit: boolean) {
             // Make sure not to write js File and source map file if any of them cannot be written
             if (!host.isEmitBlocked(jsFilePath) && !compilerOptions.noEmit) {
@@ -8376,6 +8377,10 @@ const _super = (function (geti, seti) {
 
             if (declarationFilePath) {
                 emitSkipped = writeDeclarationFile(declarationFilePath, sourceFiles, isBundledEmit, host, resolver, emitterDiagnostics) || emitSkipped;
+            }
+
+            if (flowDeclarationFilePath) {
+                emitSkipped = writeFlowDeclarationFile(flowDeclarationFilePath, sourceFiles, isBundledEmit, host, resolver, emitterDiagnostics) || emitSkipped;
             }
 
             if (!emitSkipped && emittedFilesList) {

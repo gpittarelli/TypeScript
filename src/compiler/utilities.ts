@@ -2232,6 +2232,18 @@ namespace ts {
         }
     }
 
+    export function getFlowDeclarationEmitOutputFilePath(sourceFile: SourceFile, host: EmitHost) {
+        const options = host.getCompilerOptions();
+        const outputDir = options.declarationDir || options.outDir; // Prefer declaration folder if specified
+
+        if (options.flowDeclaration) {
+            const path = outputDir
+                ? getSourceFilePathInNewDir(sourceFile, host, outputDir)
+                : sourceFile.fileName;
+            return removeFileExtension(path) + ".flow.js";
+        }
+    }
+
     export function getEmitScriptTarget(compilerOptions: CompilerOptions) {
         return compilerOptions.target || ScriptTarget.ES3;
     }
@@ -2246,6 +2258,7 @@ namespace ts {
         jsFilePath: string;
         sourceMapFilePath: string;
         declarationFilePath: string;
+        flowDeclarationFilePath: string;
     }
 
     export function forEachExpectedEmitFile(host: EmitHost,
@@ -2286,7 +2299,8 @@ namespace ts {
             const emitFileNames: EmitFileNames = {
                 jsFilePath,
                 sourceMapFilePath: getSourceMapFilePath(jsFilePath, options),
-                declarationFilePath: !isSourceFileJavaScript(sourceFile) ? getDeclarationEmitOutputFilePath(sourceFile, host) : undefined
+                declarationFilePath: !isSourceFileJavaScript(sourceFile) ? getDeclarationEmitOutputFilePath(sourceFile, host) : undefined,
+                flowDeclarationFilePath: !isSourceFileJavaScript(sourceFile) ? getFlowDeclarationEmitOutputFilePath(sourceFile, host) : undefined
             };
             action(emitFileNames, [sourceFile], /*isBundledEmit*/false);
         }
@@ -2304,7 +2318,8 @@ namespace ts {
                 const emitFileNames: EmitFileNames = {
                     jsFilePath,
                     sourceMapFilePath: getSourceMapFilePath(jsFilePath, options),
-                    declarationFilePath: options.declaration ? removeFileExtension(jsFilePath) + ".d.ts" : undefined
+                    declarationFilePath: options.declaration ? removeFileExtension(jsFilePath) + ".d.ts" : undefined,
+                    flowDeclarationFilePath: options.flowDeclaration ? removeFileExtension(jsFilePath) + ".flow.js" : undefined
                 };
                 action(emitFileNames, bundledSources, /*isBundledEmit*/true);
             }

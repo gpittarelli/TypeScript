@@ -2588,6 +2588,7 @@ namespace ts {
         baseUrl?: string;
         charset?: string;
         /* @internal */ configFilePath?: string;
+        flowDeclaration?: boolean;
         declaration?: boolean;
         declarationDir?: string;
         /* @internal */ diagnostics?: boolean;

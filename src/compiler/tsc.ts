@@ -676,7 +676,6 @@ namespace ts {
         const descriptionColumn: string[] = [];
 
         const optionsDescriptionMap = createMap<string[]>();  // Map between option.description and list of option.type if it is a kind
-
         for (let i = 0; i < optsList.length; i++) {
             const option = optsList[i];
 

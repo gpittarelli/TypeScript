@@ -18,6 +18,12 @@ namespace ts {
             description: Diagnostics.Generates_corresponding_d_ts_file,
         },
         {
+            name: "flowDeclaration",
+            shortName: "f",
+            type: "boolean",
+            description: Diagnostics.Generates_corresponding_d_ts_file,
+        },
+        {
             name: "declarationDir",
             type: "string",
             isFilePath: true,
@@ -487,7 +493,7 @@ namespace ts {
         forEach(optionDeclarations, option => {
             optionNameMap[option.name.toLowerCase()] = option;
             if (option.shortName) {
-                shortOptionNames[option.shortName] = option.name;
+                shortOptionNames[option.shortName] = option.name.toLowerCase();
             }
         });
 

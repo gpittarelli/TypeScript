@@ -22,6 +22,7 @@
         "checker.ts",
         "sourcemap.ts",
         "declarationEmitter.ts",
+        "flowDeclarationEmitter.ts",
         "emitter.ts",
         "program.ts",
         "commandLineParser.ts",
